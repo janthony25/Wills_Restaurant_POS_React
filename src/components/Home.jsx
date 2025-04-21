@@ -1,5 +1,6 @@
 import React from 'react'
 import { isAuthenticated } from '../services/authService'
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const authenticated = isAuthenticated();

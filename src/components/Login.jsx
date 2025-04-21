@@ -54,7 +54,7 @@ const Login = () => {
         <h2>Login</h2>
         {error && <div style={{color: 'red'}}>{error}</div>}
 
-        <form onSubmit={handleChange}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <label>Email: </label>
                 <input type="text"
@@ -66,7 +66,7 @@ const Login = () => {
 
             <div>
                 <label>Password: </label>
-                <input type="text"
+                <input type="password"
                         name='password'
                         value={credentials.password}
                         onChange={handleChange}
