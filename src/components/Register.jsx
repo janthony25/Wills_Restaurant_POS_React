@@ -63,7 +63,7 @@ const Register = () => {
         <h2>Register</h2>
         {error && <div style={{color: 'red'}}>{error}</div>}
 
-        <form>
+        <form onSubmit={handleSubmit}>
             <div>
             <label htmlFor="firstName">First Name:</label>
             <input
