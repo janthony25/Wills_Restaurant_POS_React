@@ -4,7 +4,7 @@ const API_URL = 'https://localhost:7256/api';
 // Register user
 export const register = async (userData) => {
     try{
-        const response = await fetch(`${API_URL}/AccountContoller/register`, {
+        const response = await fetch(`${API_URL}/Account/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -20,7 +20,13 @@ export const register = async (userData) => {
             return {success: true, data};
         }
         else {
-            return {success: false, error: data.error || 'Registration failed.'};
+            // IMPROVED: Handle case where error might be an object or array
+            let errorMessage = 'Registration failed.';
+            if (data.error) {
+                // Convert object/array errors to string to avoid React child rendering issues
+                errorMessage = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
+            }
+            return {success: false, error: errorMessage};
         }
     }
     catch(error) {
@@ -32,7 +38,7 @@ export const register = async (userData) => {
 // Login user
 export const login = async (credentials) => {
     try {
-        const response = await fetch(`${API_URL}/AccountContoller/login`, {
+        const response = await fetch(`${API_URL}/Account/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -47,7 +53,13 @@ export const login = async (credentials) => {
             localStorage.setItem('user', JSON.stringify(data));
             return {success: true, data}
         } else {
-            return {success: false, error: data.errors || 'Invalid credentials.'};
+            // IMPROVED: Handle case where errors might be an object or array
+            let errorMessage = 'Invalid credentials.';
+            if (data.errors) {
+                // Convert object/array errors to string to avoid React child rendering issues
+                errorMessage = typeof data.errors === 'string' ? data.errors : JSON.stringify(data.errors);
+            }
+            return {success: false, error: errorMessage};
         }
     } 
     catch (error) {
@@ -63,7 +75,14 @@ export const logout = () => {
 
 // Get current user
 export const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
+    // Add try-catch to handle potential JSON parse errors for invalid localStorage data
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+        // If localStorage data is invalid, remove it and return null
+        localStorage.removeItem('user');
+        return null;
+    }
 }
 
 // Check if user is authenticated
@@ -93,7 +112,13 @@ export const getUserProfile = async () => {
         if(response.ok) {
             return {success: true, data};
         } else {
-            return {success: false, error: data.errors || 'Failed to fetch profile.'};
+            // IMPROVED: Handle case where errors might be an object or array
+            let errorMessage = 'Failed to fetch profile.';
+            if (data.errors) {
+                // Convert object/array errors to string to avoid React child rendering issues
+                errorMessage = typeof data.errors === 'string' ? data.errors : JSON.stringify(data.errors);
+            }
+            return {success: false, error: errorMessage};
         }
     }
     catch (error) {
@@ -135,7 +160,13 @@ export const getUserDashboard = async () => {
         if(response.ok) {
             return {success: true, data};
         } else {
-            return {success: false, error: data.errors || 'Failed to fetch dashboard'}
+            // IMPROVED: Handle case where errors might be an object or array
+            let errorMessage = 'Failed to fetch dashboard';
+            if (data.errors) {
+                // Convert object/array errors to string to avoid React child rendering issues
+                errorMessage = typeof data.errors === 'string' ? data.errors : JSON.stringify(data.errors);
+            }
+            return {success: false, error: errorMessage};
         }
     }
     catch(error) {
