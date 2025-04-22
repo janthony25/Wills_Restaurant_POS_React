@@ -7,6 +7,7 @@ import Register from "./components/Register"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Profile from "./components/Profile"
 import UserDashboard from "./components/UserDashboard"
+import AdminDashboard from "./components/AdminDashboard"
 
 function App() {
 

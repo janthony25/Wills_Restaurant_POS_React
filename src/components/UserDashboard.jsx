@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { getUserDashboard } from '../services/authService';
 
 const UserDashboard = () => {
@@ -29,15 +29,15 @@ const UserDashboard = () => {
     if (error) return <div style={{ color: 'red' }}>{error}</div>;
     if (!dashboard) return <div>Dashboard not available</div>;
   
-  return (
-    <div>
-    <h2>User Dashboard</h2>
-    <div>
-      <p>{dashboard.message}</p>
-      <p>Access Level: {dashboard.accessLevel}</p>
-    </div>
-  </div>
-  )
+    return (
+      <div>
+        <h2>User Dashboard</h2>
+        <div>
+          {dashboard.message && <p>{dashboard.message}</p>}
+          {dashboard.accessLevel && <p>Access Level: {dashboard.accessLevel}</p>}
+        </div>
+      </div>
+    );
 }
 
 export default UserDashboard

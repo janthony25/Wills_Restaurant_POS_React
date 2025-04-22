@@ -1,12 +1,10 @@
-import { resolveEnvPrefix } from "vite";
-
 // API URL - Backend URL
 const API_URL = 'https://localhost:7256/api';
 
 // Register user
 export const register = async (userData) => {
     try{
-        const response = await fetch(`${API_URL}/AccountController/register`, {
+        const response = await fetch(`${API_URL}/AccountContoller/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +32,7 @@ export const register = async (userData) => {
 // Login user
 export const login = async (credentials) => {
     try {
-        const response = await fetch(`${API_URL}/AccountController/Login`, {
+        const response = await fetch(`${API_URL}/AccountContoller/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -82,7 +80,7 @@ export const getUserProfile = async () => {
         if(!user) {
             return {success: false, error: 'User not authenticated'};
         }
-        const response = await fetch(`${API_URL}/User/Profile`, {
+        const response = await fetch(`${API_URL}/User/profile`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${user.token}`,

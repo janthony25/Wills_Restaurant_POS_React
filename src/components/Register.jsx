@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { parseAst } from 'vite'
 import { register } from '../services/authService';
 
 const Register = () => {
