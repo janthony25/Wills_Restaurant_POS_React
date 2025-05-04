@@ -14,7 +14,7 @@ const Categories = () => {
         fetchCategories();
     }, []);
     
-    // Fetch categories from api
+    // Request API: Fetch category list
     const fetchCategories = async () => {
         try{
             const response = await fetch('https://localhost:7256/api/Category/categories');
@@ -33,7 +33,7 @@ const Categories = () => {
         }
     }
 
-    // Add Category API Request
+    // Request API: Add Category
     const addCategorySubmit = async (e) => {
         e.preventDefault();
         try{
@@ -64,6 +64,25 @@ const Categories = () => {
         }
     }
 
+    // Request API: Delete Category
+    const deleteCategory = async (e) => {
+        try{
+            const response = await fetch(`https://localhost:7256/api/Category/delete-category/${selectedCategory}`, {
+                method: 'DELETE'
+            });
+            
+            if(!response.ok) throw new Error('Failed to delete category');
+            console.log("Deleted")
+            // Refresh category list
+            fetchCategories();
+        }
+        catch(error) {
+            console.error('Failed to delete category.', error);
+            setError(error.message);
+        }
+    }
+
+
     // handle change on selected category
     const handleChange = (e) => {
         setSelectedCategory(e.target.value);
@@ -90,7 +109,7 @@ const Categories = () => {
             
 
 
-            <div className='border w-100 mr-25 pb-10 pt-2 pl-4 rounded-md'>
+            <div className='border w-100 mr-25 pb-8 pt-2 pl-4 rounded-md'>
                 <h1 className='text-xl'>Categories</h1>
                 {loading ? (
                     <p className='mt-5'>Loading categories...</p>
@@ -101,7 +120,8 @@ const Categories = () => {
                         ))}
                     </select>
                 )}
-                
+                <button onClick={deleteCategory}
+                 className='bg-red-500/90 w-20 rounded-sm mt-2 hover:bg-red-600'>Delete</button>
 
             </div>
 
