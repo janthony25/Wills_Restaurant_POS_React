@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import Profile from "./components/Profile"
 import UserDashboard from "./components/UserDashboard"
 import AdminDashboard from "./components/AdminDashboard"
+import Categories from "./components/pos/Categories"
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/dashboard" element={<UserDashboard />} />
+                        <Route path="/categories" element={<Categories />} />
                     </Route>
 
                     {/* Protected routes for admin only */}

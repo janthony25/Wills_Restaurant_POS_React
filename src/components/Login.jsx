@@ -21,46 +21,11 @@ const Login = () => {
         }));
     }
 
-    // Helper function to format error messages from the API
-    const formatErrorMessage = (errorStr) => {
-        try {
-            // Try to parse the error as JSON
-            const errorObj = JSON.parse(errorStr);
-            
-            // If it's an object with field-specific errors
-            if (typeof errorObj === 'object' && !Array.isArray(errorObj)) {
-                // Extract all error messages from the object
-                const messages = [];
-                Object.keys(errorObj).forEach(key => {
-                    const fieldErrors = errorObj[key];
-                    if (Array.isArray(fieldErrors)) {
-                        fieldErrors.forEach(msg => messages.push(msg));
-                    } else if (typeof fieldErrors === 'string') {
-                        messages.push(fieldErrors);
-                    }
-                });
-                return messages.join('. ');
-            }
-            
-            // If it's already parsed but is an array
-            if (Array.isArray(errorObj)) {
-                return errorObj.join('. ');
-            }
-            
-            // If JSON parsing succeeded but it's something else
-            return errorStr;
-        } catch (e) {
-            // If it's not valid JSON, just return the original string
-            return errorStr;
-        }
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
 
-        // validate input
         if(!credentials.email || !credentials.password) {
             setError('Please enter email and password');
             setIsLoading(false);
@@ -72,8 +37,7 @@ const Login = () => {
             if(result.success) {
                 navigate('/profile');
             } else {
-                // Format the error message before displaying it
-                setError(formatErrorMessage(result.error));
+                setError(result.error);
             }
         }
         catch(err) {
@@ -85,33 +49,63 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <h2>Login</h2>
-            {error && <div style={{color: 'red'}}>{error}</div>}
+        <div className="flex items-center justify-center min-h-[calc(100vh-64px)] px-4 overflow-hidden">
+            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+                <div className="text-center">
+                    <h2 className="text-3xl font-extrabold text-gray-900">Login</h2>
+                </div>
+                
+                {error && (
+                    <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                        {error}
+                    </div>
+                )}
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email: </label>
-                    <input type="text"
-                            name='email'
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            required
                             value={credentials.email}
                             onChange={handleChange}
-                            required />
-                </div>
-
-                <div>
-                    <label>Password: </label>
-                    <input type="password"
-                            name='password'
+                            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                            placeholder="Email address"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autoComplete="current-password"
+                            required
                             value={credentials.password}
                             onChange={handleChange}
-                            required />
-                </div>
+                            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                            placeholder="Password"
+                        />
+                    </div>
 
-                <button type='submit' disabled={loading}>
-                    {loading ? 'logging in...' : 'Login'}
-                </button>
-            </form>
+                    <div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50"
+                        >
+                            {loading ? 'Signing in...' : 'Sign in'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }
